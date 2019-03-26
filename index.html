@@ -3,14 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Word Guess Game</title>
 </head>
 <body>
-    
-
+   <ul class="nav justify-content-center">
+       <li class="nav-item">
+           <a class="nav-link active" href="#">Rules</a>
+       </li>
+       <li class="nav-item">
+           <a class="nav-link" href="#">Settings</a>
+       </li>
+       <li class="nav-item">
+           <a class="nav-link disabled" href="#">Score Board</a>
+       </li>
+   </ul>
+   <div class = "wrapper bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card h-a">
+                        <div class="card-body">
+                        <h4 id="title" class="card-title">Word Game</h4>
+                        <p id="game" class="card-text">
+                            <button type="button" name="start" id="start" class="btn btn-primary" btn-lg btn-block">Press Here To Start Game</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -21,5 +45,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script src="assets/javascript/game.js"></script>
 </body>
 </html>
