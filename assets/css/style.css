@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Aguafina+Script|MedievalSharp');
+
+/* 
+font-family: 'MedievalSharp', cursive;
+font-family: 'Aguafina Script', cursive; 
+*/
+
+h1,h2,h3,h4,h5,h6{
+
+    font-family: 'MedievalSharp', cursive;
+}
+
+p {
+    font-family: 'Aguafina Script', cursive;
+}
