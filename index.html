@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="assets/css/style.css">
     <title>Word Guess Game</title>
 </head>
 <body>
-   <ul class="nav justify-content-center">
+   <ul class="nav">
        <li class="nav-item">
            <a class="nav-link active" href="#">Rules</a>
        </li>
@@ -20,21 +21,55 @@
            <a class="nav-link disabled" href="#">Score Board</a>
        </li>
    </ul>
+   
    <div class = "wrapper bg-dark">
+        
     <div class="container">
         <div class="row">
-            <div class="col-12">
-                <div class="card h-a">
+            <div class="col">
+                
+          
+               
+                <!-- <div class="jumbotron">
+                    
+                    <p class="lead">Jumbo helper text</p>
+                   
+                    <p class="lead">
+                        <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Start Game</a>
+                    </p>
+                </div> -->
+                <div class="alert" role="alert">
+                    <h4 id="alertTitle" class="alert-heading"></h4>
+                    <p id="alertMessage"></p>
+                </div>
+                <div id="gameInfoArea" class="card" style="display: block;">
+                   
                         <div class="card-body">
-                        <h4 id="title" class="card-title">Word Game</h4>
-                        <p id="game" class="card-text">
+                        <h5 id="title" class="card-title"></h5>
+                        <p id="game" class="bg-light card-text">
                             <button type="button" name="start" id="start" class="btn btn-primary" btn-lg btn-block">Press Here To Start Game</button>
                         </p>
                     </div>
                 </div>
+                <div class="sign">
+                    <div class="infoStatus">
+                    <h3 class="Score">Wins <span id="wins">--</span></h3>
+                    <h3 class="Score">Guesses Left <span id="guessesleft">--</span></h3>
+                    <h3 class="Score">Level <span id="level">--</span></h3>
+                    <img src="assets\images\empty_sign.png" style="
+                        position: fixed;
+                        left: 14px;
+                        top: 96px;
+                        width: 362px;
+                        z-index: 1;
+                    "></div>
+                </div>
             </div>
         </div>
     </div>
+    <footer class="container-fluid bg-light">
+        <span class="copy">Copyright 2019© Ryan Crawford</span>
+    </footer>
 </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
