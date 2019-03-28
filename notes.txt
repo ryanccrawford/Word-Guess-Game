@@ -1,0 +1,24 @@
+ document.getElementById('game')
+ document.getElementById('title')
+ document.querySelectorAll('#letterGroup .slider')
+ document.documentElement.style
+ document.getElementById(titleId)
+
+ score = wins
+ guessesleft
+ level
+
+alertbox // the alert message Box id
+alertIcon
+alertIconImage
+ alertTitle // the alert message title
+ alertMessage // the alert message box message
+
+ gameInfoArea // the actual card id
+
+title // the card title
+
+game // where the tiles are displayed
+loader // spin loader
+startButton // button
+statingup // loading window

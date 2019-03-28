@@ -10,7 +10,8 @@
 // After the user wins / loses the game should automatically choose another word and make the user play it.
 
 
-var wordCollection = ['delightful', 'survive', 'gleaming', 'existence', 'charming', 'blossom', 'juice', 'riddle', 'cracker', 'consider', 'fling', 'premium', 'material', 'collect', 'hypnotize', 'calculator', 'popcorn', 'discover', 'sabotage', 'announce', 'economic', 'conspire', 'preserve', 'knowledge', 'scandalous', 'punishment', 'breakfast', 'interesting', 'goldfish', 'amused', 'railway', 'addition'];
+
+var wordCollection = ['kingdom', 'arrow', 'stone', 'riddle', 'cracker', 'gold', 'subjects', 'queen', 'king', 'discovery', 'sabotage', 'dungeon', 'gold', 'victory', 'sword', 'castle', 'horses', 'knight', 'princess', 'royalty', 'moat', 'wars'];
 var path = 'assets/images/';
 var levels = [1,2,3,4];
 var levelBackgrounds = ['level_', 'star_game.jpg', 'game_over.jpg', 'empty_sign.png'];
@@ -23,7 +24,17 @@ var WordGame = {
         return getLastKey();
     },
     currentWord: [],
-    howManyLettersLeft: function () { },
+    howManyLettersLeft: function () {
+        var count = 0;
+        this.currentWord.forEach( function(letter){
+            if(letter != ' '){
+                count++;
+            }
+        });
+
+        return count;
+
+     },
     guessesLeft: STARTING_LIVES,
     incorrectLettersGuessed: [],
     correctLettersGuessed: [],
@@ -31,29 +42,33 @@ var WordGame = {
         for(var i = 0; i < positions.length; i++){
             var letter = positions[i][1];
             var index = positions[i][0];
-            var titleId = "letter_"+index;
+            var tileId = "letter_"+index;
             var newImage = path + "letters/letter_" + letter.toUpperCase() +".png";
             var imgTile = document.createElement("img");
             imgTile.setAttribute('id', 'shownletter_' + i );
            
             imgTile.setAttribute('class', 'slider' );
             imgTile.setAttribute('src', newImage );
-            var el = document.getElementById(titleId);
+            var el = document.getElementById(tileId);
             el.parentNode.replaceChild(imgTile, el);
         }
     },
     guessLetter: function (letter) {
         var positions = [];
-
+        
+        var indx = '';
+        
         this.currentWord.forEach(function (l, index) {
             if (l === letter) {
+                indx = index;
+                this.currentWord[indx] = ' ';
+                        
                 positions.push([index , letter]);
             }
         });
         if (positions.length) {
             return positions;
-        }
-
+        }     
         return 0;
     },
     getNewWord: function () {
@@ -68,9 +83,8 @@ var WordGame = {
         this.currentWord = newWord.split('');
         this.words[this.words.indexOf(newWord)] = '';
         this.guessesLeft = STARTING_LIVES;
-        this.howManyLettersLeft = this.currentWord.length;
-        this.incorrectLettersGuessed = 0;
-        this.correctLettersGuessed = 0;
+        this.incorrectLettersGuessed = [];
+        this.correctLettersGuessed = [];
         return this.currentWord;
     },
     isWordsLeft: function () {
@@ -80,7 +94,73 @@ var WordGame = {
     words: wordCollection,
     length: function () {
         return this.currentWord.length;
+    },
+    sysGetScreenEle: function(element){// this object function is used to get and set text/graphics on the users screen
+        // this function is intended to be used privately by this object
+
+        //check to see if the name of an alement or the actual
+        //element was passed
+        if(typeof(element) === 'string'){
+            return document.getElementById(element);
+        }else if(typeof(element) === 'object'){
+            return element;
+        }
+         
+
+    },
+    sysAlertIconImage: function (iconPath){
+        alertIconImage.setAttribute('src',iconPath?iconPath:'assets\images\icons\scroll.png');
+    },
+    PrintScore:function(score){
+        this.sysGetScreenEle('wins').innerText = score;
+    },
+    PrintGuessesLeft:function(guesses){
+        this.sysGetScreenEle('guessesleft').innerText = guesses;
+    },
+    Printlevel:function(level){
+        this.sysGetScreenEle('level').innerText = level;
+    },
+    PlayerAlertShow: function(message, icon, title ='System Message'){
+        
+        this.sysGetScreenEle('alertMessage').innerText = message;
+        this.sysGetScreenEle('alertTitle').innerText = title;
+        var iconImgePath = '';
+        switch (icon){
+            case 'scroll':
+            iconImgePath = 'assets/mages/icons/scroll.png';
+            break;
+            case 'magnify':
+            iconImgePath = 'assets/images/icons/magnify.png';
+            break;
+            case 'key':
+            iconImgePath = 'assets/images/icons/key.png';
+            break;
+            default:
+            iconImgePath = 'assets/images/icons/scroll.png';
+            break;
+        }
+        this.sysAlertIconImage(iconImgePath);
+        this.sysGetScreenEle('alertbox').style.display = "block";
+    },
+    PlayerAlertHide: function(){
+        this.sysGetScreenEle('alertMessage').innerText = '';
+        this.sysGetScreenEle('alertTitle').innerText = '';
+        var iconImgePath = '';
+        this.sysGetScreenEle('alertbox').style.display = "none";
+    },
+    RefreshScreen: function(){
+        this.PrintScore(Player.score);
+        this.PrintGuessesLeft(Player.lives);
+        this.Printlevel(Player.level);
+        this.PlayerAlertHide();
+
+
+    },
+    GameOver: function(){
+        //TODO GAME OVER
     }
+    
+
 }
 
 var SystemInfo = {
@@ -90,18 +170,24 @@ var SystemInfo = {
 };
 var Player = {
     name: 'Player One',
-    wins: 0
+    score: 0,
+    lives: 0,
+    level: 0,
+
 };
 
 var word_game = WordGame;
+var player = Player;
+var systemInfo = SystemInfo;
+
 
 function startgame() {
     
     var letters = word_game.getNewWord();
-
-
-
-    document.getElementById('game').innerHTML = "";
+    document.getElementById('startingup').style.display = "none";
+    document.getElementById('game_window').style.display = "block";
+    document.getElementById('game').style.display = "block";
+    document.getElementById('game').innerText = "";
     var game_area = "<div id='letterGroup'>";
     var ll = letters.length;
     for (let i = 0; i < ll; i++) {
@@ -116,14 +202,14 @@ function startgame() {
     }
     game_area += "</div>";
     document.getElementById('title').innerText = "Using the keyboard, select any letter from a - z";
+    document.getElementById('title').style.color = 'white';
     document.getElementById('game').innerHTML = game_area;
-    // for(let i = 0; i < ll; i++){
-    //     var select = 'letter_'+i;
-      
-    // }
+    
     var titles = document.querySelectorAll('#letterGroup .slider');
     var docElemStyle = document.documentElement.style;
     var transitionProp = typeof docElemStyle.transition == 'string' ? 'transition' : 'WebkitTransition';
+
+    document.getElementById('game').style.display = "block";
     startTileDrop();
 
    function startTileDrop() {
@@ -152,21 +238,34 @@ function startgame() {
             }
 
         }
+        if(iskeyValid){
+                  
             letterPositions = word_game.guessLetter(keypressed);
-        if (letterPositions) {
-            word_game.showLetters(letterPositions);
-           // word_game.correctLettersGuessed.push(keypressed);
+                if (letterPositions) {
+                    word_game.showLetters(letterPositions);
+                    player.score++;
+                    console.log('correct letter guessed');
+                } else {
+                    word_game.incorrectLettersGuessed.push(keypressed);
+                    word_game.guessesLeft--;
+                    Player.lives = word_game.guessesLeft;
+                    console.log('incorrect letter guessed');
+                }
 
-            console.log('correct letter guessed');
-        } else {
-            word_game.incorrectLettersGuessed.push(keypressed);
-            if(!(--word_game.guessesLeft !== 0)){
-                //TODO GAME OVER
-            }
+                word_game.RefreshScreen();
+
+                if(Player.lives == 0){
+                    //TODO GAME OVER
+                    // word_game.GameOver();
+                }
+                if(word_game.howManyLettersLeft() == 0){
+                     //TODO GAME OVER
+                    // word_game.GameOver();
+                }
+                
             
-            console.log('incorrect letter guessed');
-        }
 
+        }
     });
 
 
@@ -175,5 +274,8 @@ function startgame() {
 
 
 }
+
+document.getElementById('loader').style.display = "none";
+
 
 document.getElementById('start').addEventListener('click', startgame);

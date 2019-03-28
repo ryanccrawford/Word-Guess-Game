@@ -1,18 +1,29 @@
 @import url('https://fonts.googleapis.com/css?family=Aguafina+Script|MedievalSharp');
+*{
 
+    font-family: 'MedievalSharp', cursive !important;
+}
+
+p {
+    font-family: 'Aguafina Script', cursive !important;
+}
 /* 
 font-family: 'MedievalSharp', cursive;
 font-family: 'Aguafina Script', cursive; 
 */
 
-h1,h2,h3,h4,h5,h6{
-
-    font-family: 'MedievalSharp', cursive;
+#startingup {
+       
+    background-image: url(../images/levels/level_1.jpg) !important;
+    background-size: cover !important;
+    height: -webkit-fill-available !important;
+    border-radius: 20px !important;
+    margin-top: 40px;
+}
+#game_window{
+    display: none;
 }
 
-p {
-    font-family: 'Aguafina Script', cursive;
-}
 
 .letter-tile img {
     max-width: 125px;
@@ -22,21 +33,22 @@ p {
 
 #gameInfoArea {
     margin-top: 40px;
-    min-height: 524px !important;
+    min-height: 564px !important;
     background-image: url(../images/levels/start_game.jpg);
     background-size: 100%;
+    min-height: 563px;
 
 }
 #game {
     position: absolute;
-    bottom: -9px;
+    bottom: -1px;
     left: 20px;
     right: 20px;
-    height: 189px;
+    height: 354px;
     border-radius: 10px;
     z-index: 2;
-
-
+    background-color: rgba(0,0,0,0.6) !important;
+    border: 3px solid burlywood;
 }
 .display-3{
     position: fixed;
@@ -73,7 +85,6 @@ footer{
 }
 #start{
     cursor: pointer;
-    position: absolute;
     left: 6%;
     bottom: 40%;
     width: 300px;
@@ -129,3 +140,24 @@ footer{
         font-size: 100%;
         text-align: right;
     }
+    #woodBeam{
+        display: block;
+    }
+    #woodBeam img {
+        position: absolute;
+        width: -webkit-fill-available;
+        bottom: 348px;
+        left: -2px;
+        z-index: 100;
+    }
+    .round-more{
+
+        border-radius: 20px !important;
+    }
+.jumbotron{
+    background-color: rgba(0, 0, 0, 0.46) !important;
+    margin: auto;
+}
+body{
+background-color: black !important;
+}

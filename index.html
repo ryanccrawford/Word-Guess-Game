@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/reset.css">
+   
+    <link rel="stylesheet" href="assets/css/style.css">
+   
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="assets/css/style.css">
+    
     <title>Word Guess Game</title>
 </head>
 <body>
@@ -24,9 +27,22 @@
        </li>
    </ul>
     </nav>
-   <div class = "wrapper bg-dark">
+    <div class="container">
+    <div id="startingup" >
+                <div class="jumbotron col-8">
+                        <div class="container">
+                          <h1 class="display-4 text-light">Medieval Word Guess</h1>
+                          <div id="loader" class="spinner-border text-light" role="status">
+                                <span class="sr-only">Loading...</span>
+                          </div>
+                          <p id="startButton"><button type="button" name="start" id="start" class="btn btn-primary btn-lg btn-block">Start Game</button></p>
+                        </div>
+                      </div>
+    </div></div>
+   <div id="game_window" class = "wrapper bg-dark">
         
     <div class="container">
+
         <div class="row">
             <div class="col">
                 
@@ -40,20 +56,28 @@
                         <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Start Game</a>
                     </p>
                 </div> -->
-                <div class="alert" role="alert">
+                <div id="alertbox" class="alert" role="alert">
+                    <div id="alertIcon" class="alert-icon"><img id="alertIconImage"></div>
                     <h4 id="alertTitle" class="alert-heading"></h4>
                     <p id="alertMessage"></p>
                 </div>
-                <div id="gameInfoArea" class="card" style="display: block;">
+                <div id="gameInfoArea" class="card round-more" style="display: block;">
                    
                         <div class="card-body">
                         <h5 id="title" class="card-title"></h5>
-                        <p id="game" class="bg-light card-text">
-                            <button type="button" name="start" id="start" class="btn btn-primary" btn-lg btn-block">Press Here To Start Game</button>
-                        </p>
+                       
+                        <div id="screenarea" class="bg-light card-text">
+                                <div id="woodBeam" class="wooden-beam"><img src="assets/images/levels/wood_beam.png"></div>
+                        
+                            <div id="game">
+                            </div>
+                        
+                        </div>
+                      
+                     
                     </div>
                 </div>
-                <div class="sign">
+                <div id="sign" class="sign">
                     <div class="infoStatus1"><h3 class="Score">W <span id="wins">---</span></h3>
                     <img src="assets/images/signs/hang_sign.png"></div>
                      <div class="infoStatus2">
@@ -65,8 +89,8 @@
             </div>
         </div>
     </div>
-    <footer class="navbar fixed-bottom navbar-light bg-light">
-        <span class="copy">Copyright 2019© Ryan Crawford</span>
+    <footer class="fixed-bottom bg-light">
+        <span class="copy text-dark">Copyright 2019© Ryan Crawford</span>
     </footer>
     </div>
 
