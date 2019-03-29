@@ -15,15 +15,22 @@ var wordCollection = ['kingdom', 'arrow', 'stone', 'riddle', 'cracker', 'gold', 
 var path = 'assets/images/';
 var levels = [1,2,3,4];
 var levelBackgrounds = ['level_', 'star_game.jpg', 'game_over.jpg', 'empty_sign.png'];
-var validKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+var validKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 const STARTING_LIVES = 8;
 var letterTile = '<img class="slider closed" src="' + path + '/signs/letter_title.png" >';
 
+// String Messages this way it makes it easier to change the text
+const HOW_TO_PLAY_MESSAGE = 'Using the keyboard, select any letter from a - z';
+const YES = "Yes";
+const NO = "No";
+const NO_KEY = "No Key Pressed"
+
 var WordGame = {
     lastKeyPressed: function () {
-        return getLastKey();
+        return this.lastkey ? this.lastkey : NO_KEY;
     },
     currentWord: [],
+    lastkey: "",
     howManyLettersLeft: function () {
         var count = 0;
         this.currentWord.forEach( function(letter){
@@ -35,7 +42,7 @@ var WordGame = {
         return count;
 
      },
-    guessesLeft: STARTING_LIVES,
+    guessesLeft: 0,
     incorrectLettersGuessed: [],
     correctLettersGuessed: [],
     showLetters: function (positions){
@@ -46,49 +53,75 @@ var WordGame = {
             var newImage = path + "letters/letter_" + letter.toUpperCase() +".png";
             var imgTile = document.createElement("img");
             imgTile.setAttribute('id', 'shownletter_' + i );
-           
-            imgTile.setAttribute('class', 'slider' );
             imgTile.setAttribute('src', newImage );
+            //get the blank tile and replace with the correct letter
             var el = document.getElementById(tileId);
             el.parentNode.replaceChild(imgTile, el);
         }
     },
-    guessLetter: function (letter) {
+    guessLetter: function (letter) {// this function checks to see if the letter picked was right
         var positions = [];
         
         var indx = '';
-        
-        this.currentWord.forEach(function (l, index) {
-            if (l === letter) {
-                indx = index;
-                this.currentWord[indx] = ' ';
-                        
-                positions.push([index , letter]);
+        var word = this.currentWord;
+        for (var i = 0; i < word.length; i++) {
+            
+            if (word[i] === letter) {
+                //every letter found clears from current word array so we don't double pick the same letter again
+                this.currentWord[i] = ' ';
+                //then push that position into this so it can be removed visually
+                positions.push([i, letter]);
             }
-        });
+
+        }
+       
+    
         if (positions.length) {
             return positions;
         }     
         return 0;
     },
     getNewWord: function () {
+        // checks for current word. If true stores it for latter access
         if (!this.currentWord) {
             this.previousWords.push(this.currentWord.toString());
         }
-        if (!this.isWordsLeft()) {
-            //game is over
-            stop();
-        }
-        var newWord = this.words[Math.floor(Math.random() * this.words.length) - 1];
+        //randomly chooses a word from the word list
+       // var newWord = this.words[Math.floor(Math.random() * this.words.length) - 1];
+        var newWord = this.words[0];
+        //splits word up into an array of letters
         this.currentWord = newWord.split('');
+        //removes the word from the list so we dont use it agian
         this.words[this.words.indexOf(newWord)] = '';
-        this.guessesLeft = STARTING_LIVES;
+        //all new words which are new levels, add guesses 
+        this.guessesLeft =+ STARTING_LIVES;
+        // array of incorrect guesses for current word
         this.incorrectLettersGuessed = [];
+        // array of correct letters guessed
         this.correctLettersGuessed = [];
-        return this.currentWord;
+
+        //create new wooden tiles for the new word and display them
+        var game_area = "<div id='letterGroup'>";
+        var ll = this.currentWord.length;
+        for (let i = 0; i < ll; i++) {
+
+            var imgTile = document.createElement("img");
+            imgTile.setAttribute('id', 'letter_' + i);
+            imgTile.setAttribute('src', path + '/signs/letter_title.png');
+            game_area += '<span class="letter-tile">' + imgTile.outerHTML + '</span>';
+        }
+        game_area += "</div>";
+
+
     },
     isWordsLeft: function () {
-        return this.words.length ? true : false;
+        var counter = 0;
+        for (var i = 0; i < this.words.length; i++){
+            if (this.words[i].length > 0) {
+                counter++
+            }
+        }
+        return counter ? true : false;
     },
     previousWords: [],
     words: wordCollection,
@@ -109,7 +142,7 @@ var WordGame = {
 
     },
     sysAlertIconImage: function (iconPath){
-        alertIconImage.setAttribute('src',iconPath?iconPath:'assets\images\icons\scroll.png');
+        alertIconImage.setAttribute('src',iconPath?iconPath:'assets/images/icons/scroll.png');
     },
     PrintScore:function(score){
         this.sysGetScreenEle('wins').innerText = score;
@@ -149,78 +182,53 @@ var WordGame = {
         this.sysGetScreenEle('alertbox').style.display = "none";
     },
     RefreshScreen: function(){
-        this.PrintScore(Player.score);
-        this.PrintGuessesLeft(Player.lives);
-        this.Printlevel(Player.level);
+        this.PrintScore(this.won);
+        this.PrintGuessesLeft(this.guessesLeft);
+        this.Printlevel(this.level);
         this.PlayerAlertHide();
 
 
     },
-    GameOver: function(){
-        //TODO GAME OVER
+    GameOver: function () {
+        // TODO Create a better game over
+        alert("Game Over!");
+    },
+    name: 'Player One',
+    won: 0,
+    level: 0,
+    isWordComplete: function () {
+      return   this.howManyLettersLeft == 0 ? true : false
     }
+}
+
+//Creat a n istance of the game object
+var word_game = WordGame;
+// hide loader
+document.getElementById('loader').style.display = "none";
+// Starup Screen button event listener, fires the startgame() function
+document.getElementById('start').addEventListener('click', startgame);
+
+
+function startgame() {
+
+    //clear scores, get everything ready to play
+    initialize();
+   
+    
+    word_game.getNewWord();
+    document.getElementById('title').innerText = HOW_TO_PLAY_MESSAGE;
+    document.getElementById('title').style.color = 'white';
+    document.getElementById('game').innerHTML = game_area;
+    
+
+    document.getElementById('game').style.display = "block";
+    listenForKey();
     
 
 }
 
-var SystemInfo = {
-    startMessage: 'Press any key to get started',
-    images: levelBackgrounds,
-    imagePath: path
-};
-var Player = {
-    name: 'Player One',
-    score: 0,
-    lives: 0,
-    level: 0,
-
-};
-
-var word_game = WordGame;
-var player = Player;
-var systemInfo = SystemInfo;
-
-
-function startgame() {
+function listenForKey() {
     
-    var letters = word_game.getNewWord();
-    document.getElementById('startingup').style.display = "none";
-    document.getElementById('game_window').style.display = "block";
-    document.getElementById('game').style.display = "block";
-    document.getElementById('game').innerText = "";
-    var game_area = "<div id='letterGroup'>";
-    var ll = letters.length;
-    for (let i = 0; i < ll; i++) {
-        
-        var imgTile = document.createElement("img");
-        imgTile.setAttribute('id', 'letter_' + i );
-       
-        imgTile.setAttribute('class', 'slider closed' );
-        imgTile.setAttribute('src', path + '/signs/letter_title.png' );
-
-        game_area += '<span class="letter-tile">'+imgTile.outerHTML+'</span>';
-    }
-    game_area += "</div>";
-    document.getElementById('title').innerText = "Using the keyboard, select any letter from a - z";
-    document.getElementById('title').style.color = 'white';
-    document.getElementById('game').innerHTML = game_area;
-    
-    var titles = document.querySelectorAll('#letterGroup .slider');
-    var docElemStyle = document.documentElement.style;
-    var transitionProp = typeof docElemStyle.transition == 'string' ? 'transition' : 'WebkitTransition';
-
-    document.getElementById('game').style.display = "block";
-    startTileDrop();
-
-   function startTileDrop() {
-        for ( let i=0; i < ll; i++ ) {
-          var tile = titles[i];
-          tile.style[ transitionProp + 'Delay' ] = ( i * 150) + 'ms';
-          tile.classList.toggle('closed');
-        }
-    }
-      
-
 
     document.addEventListener('keyup', function (event) {
 
@@ -230,52 +238,67 @@ function startgame() {
 
             if (validKeys[i] === keypressed) {
                 iskeyValid = true;
-                console.log('you pressed ' + keypressed)
-                break;
-            } else {
-
-                continue;
+                var letterchild = document.createElement("span");
+                var lettersused = document.getElementById('lettersUsed');
+                letterchild.innerText = keypressed.toLocaleUpperCase();
+                letterchild.style.fontSize = "22px";
+                lettersused.innerHTML = letterchild.outerHTML;
             }
 
         }
-        if(iskeyValid){
-                  
+        if (iskeyValid) {
+
             letterPositions = word_game.guessLetter(keypressed);
-                if (letterPositions) {
-                    word_game.showLetters(letterPositions);
-                    player.score++;
-                    console.log('correct letter guessed');
+            if (letterPositions) {
+                word_game.showLetters(letterPositions);
+                if (positions.length > 1) {
+                    alert("Yes there are " + positions.length + " " + keypressed + "'s ")
+
                 } else {
-                    word_game.incorrectLettersGuessed.push(keypressed);
-                    word_game.guessesLeft--;
-                    Player.lives = word_game.guessesLeft;
-                    console.log('incorrect letter guessed');
-                }
+                    alert("Yes there is " + positions.length + " " + keypressed);
 
-                word_game.RefreshScreen();
+                }
+                         } else {
+                word_game.incorrectLettersGuessed.push(keypressed);
+                word_game.guessesLeft--;
+                alert("No " + keypressed + ", sorry");
+            }
 
-                if(Player.lives == 0){
-                    //TODO GAME OVER
-                    // word_game.GameOver();
-                }
-                if(word_game.howManyLettersLeft() == 0){
-                     //TODO GAME OVER
-                    // word_game.GameOver();
-                }
-                
-            
+            word_game.RefreshScreen();
+            ///\ Checking for word completely guessed 
+            if (word_game.isWordComplete()) {
+                word_game.level++;
+                var filename = "../images/levels/level_" + word_game.level + ".jpg";
+                document.getElementById('gameInfoArea').style.backgroundImage = "../images/levels/"
+                word_game.newWord();
+            }
+
+            if (word_game.lives == 0) {
+                //TODO GAME OVER
+                // word_game.GameOver();
+                word_game.GameOver();
+            }
+            if (word_game.howManyLettersLeft() == 0) {
+                //TODO GAME OVER
+                //word_game.GameOver();
+                alert("Game Over");
+            }
+
+
 
         }
-    });
+    }); 
+}
 
-
-
+function initialize() {
+    word_game.guessesLeft = STARTING_LIVES;
+    document.getElementById('startingup').style.display = "none";
+    document.getElementById('game_window').style.display = "block";
+    document.getElementById('game').style.display = "block";
+    document.getElementById('game').innerText = "";
 
 
 
 }
 
-document.getElementById('loader').style.display = "none";
 
-
-document.getElementById('start').addEventListener('click', startgame);

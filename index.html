@@ -14,19 +14,6 @@
 </head>
 <body>
     
-    <nav class="navbar fixed-top navbar-light bg-light">
-   <ul class="nav">
-       <li class="nav-item">
-           <a class="nav-link active" href="#">Rules</a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link" href="#">Settings</a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link disabled" href="#">Score Board</a>
-       </li>
-   </ul>
-    </nav>
     <div class="container">
     <div id="startingup" >
                 <div class="jumbotron col-8">
@@ -38,8 +25,9 @@
                           <p id="startButton"><button type="button" name="start" id="start" class="btn btn-primary btn-lg btn-block">Start Game</button></p>
                         </div>
                       </div>
-    </div></div>
-   <div id="game_window" class = "wrapper bg-dark">
+    </div>
+    </div>
+    <div id="game_window" class = "wrapper bg-dark">
         
     <div class="container">
 
@@ -65,7 +53,7 @@
                    
                         <div class="card-body">
                         <h5 id="title" class="card-title"></h5>
-                       
+                       <div id='lettersUsed'></div>
                         <div id="screenarea" class="bg-light card-text">
                                 <div id="woodBeam" class="wooden-beam"><img src="assets/images/levels/wood_beam.png"></div>
                         
@@ -88,10 +76,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <footer class="fixed-bottom bg-light">
-        <span class="copy text-dark">Copyright 2019© Ryan Crawford</span>
-    </footer>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

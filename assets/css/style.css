@@ -26,8 +26,8 @@ font-family: 'Aguafina Script', cursive;
 
 
 .letter-tile img {
-    max-width: 125px;
-    width: 20%;
+    max-width: 100px;
+    width: 80%;
     margin-top: -5px;
 }
 
@@ -74,15 +74,7 @@ footer{
     text-align: center;
     
 }
-.slider {
-	overflow-y: hidden;
-	max-height: 100px;
-	transition: transform 0.4s;
-}
-.slider.closed {
-    max-height: 0;
-    transform: translateX(145px);
-}
+
 #start{
     cursor: pointer;
     left: 6%;
@@ -160,4 +152,22 @@ footer{
 }
 body{
 background-color: black !important;
+}
+#lettersUsed{
+color:white;
+font-size: 18;
+
+
+}
+.toggle {
+    display: none;
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 500ms ease-in-out;
+    
+}
+
+.toggle.show {
+    display: block;
+    opacity: 1;
 }
