@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/reset.css">
    
-    <link rel="stylesheet" href="assets/css/style.css">
+    
    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+        <link rel="stylesheet" href="assets/css/style.css">
     <title>Word Guess Game</title>
 </head>
 <body>
     
-    <div class="container">
+    <div class="container-fluid">
     <div id="startingup" >
-                <div class="jumbotron col-8">
+                <div class="jumbotron">
                         <div class="container">
-                          <h1 class="display-4 text-light">Medieval Word Guess</h1>
+                          <h1 class="text-light">Medieval Word Guess</h1>
                           <div id="loader" class="spinner-border text-light" role="status">
                                 <span class="sr-only">Loading...</span>
                           </div>
@@ -27,57 +27,72 @@
                       </div>
     </div>
     </div>
-    <div id="game_window" class = "wrapper bg-dark">
-        
-    <div class="container">
-
-        <div class="row">
-            <div class="col">
-                
-          
-               
-                <!-- <div class="jumbotron">
-                    
-                    <p class="lead">Jumbo helper text</p>
-                   
-                    <p class="lead">
-                        <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Start Game</a>
-                    </p>
-                </div> -->
-                <div id="alertbox" class="alert" role="alert">
-                    <div id="alertIcon" class="alert-icon"><img id="alertIconImage"></div>
+    <div id="game_window">
+      <div class="container">
+            <div id="alertbox" class="alert" role="alert">
+                    <div id="alertIcon" class="alert-icon">
+                        <img id="alertIconImage">
+                    </div>
                     <h4 id="alertTitle" class="alert-heading"></h4>
                     <p id="alertMessage"></p>
                 </div>
-                <div id="gameInfoArea" class="card round-more" style="display: block;">
-                   
-                        <div class="card-body">
-                        <h5 id="title" class="card-title"></h5>
-                       <div id='lettersUsed'></div>
-                        <div id="screenarea" class="bg-light card-text">
-                                <div id="woodBeam" class="wooden-beam"><img src="assets/images/levels/wood_beam.png"></div>
-                        
-                            <div id="game">
+      </div>
+    <div class="container-fluid">
+          
+        <div class="row">
+                <div class="col-4">
+                        <div id="sign" class="sign">
+                                <div class="infoStatus1">
+                                    <h3 class="Score">Wins <span id="wins">-</span></h3>
+                                    <img src="assets/images/signs/hang_sign.png">
+                                </div>
+                                <div class="infoStatus2">
+                                    <h3 class="Score">Tries <span id="guessesleft">--</span></h3>
+                                    <img src="assets/images/signs/hang_sign.png" >
+                                </div>
+                                <div class="infoStatus3">
+                                    <h3 class="Score">Level <span id="level">--</span></h3>
+                                    <img src="assets/images/signs/hang_sign.png">
+                                </div>
                             </div>
-                        
-                        </div>
-                      
-                     
+                </div>
+                <div id="mouse-area" class="col-4">
+                <div id="gameInfoArea" style="display: block;">
+                   <div class="container">
+                       
+                   
+                        <h5 id="title"></h5>
                     </div>
                 </div>
-                <div id="sign" class="sign">
-                    <div class="infoStatus1"><h3 class="Score">W <span id="wins">---</span></h3>
-                    <img src="assets/images/signs/hang_sign.png"></div>
-                     <div class="infoStatus2">
-                    <h3 class="Score">G <span id="guessesleft">---</span></h3>
-                    <img src="assets/images/signs/hang_sign.png" ></div>
-                     <div class="infoStatus3"> <h3 class="Score">L <span id="level">---</span></h3>
-                    <img src="assets/images/signs/hang_sign.png"></div></div>
                 </div>
+                <div class="col-4 letters-col">
+                    <span id="lettersUI" class="ui-text">Letters Used</span>
+                        <div id='lettersUsed'>
+                    
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="container-fluid">
+            
+       
+        <div class="row">
+            <div class="col-12">
+                        <div id="screenarea" class="bg-light lead">
+                                <div id="woodBeam1" class="wooden-beam">
+                                    <img src="assets/images/levels/wood_beam.png">
+                                </div>
+                                <div id="game"></div>
+                                
+                        </div>         
+                 
             </div>
+
+        </div>
         </div>
     </div>
-
+        </div>
+    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
