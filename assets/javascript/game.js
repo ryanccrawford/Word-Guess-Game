@@ -51,22 +51,9 @@ var WordGame = function () {
                 var letter = positions[i][1];
                 var index = positions[i][0];
                 var tileId = "letter_" + index;
-                var newImage = path + "letters/letter_" + letter.toUpperCase() + ".png";
-                var imgTile = document.createElement("img");
-                imgTile.setAttribute('id', 'shownletter_' + i);
-                imgTile.setAttribute('src', newImage);
                 //get the blank tile and replace with the correct letter
-                var el = document.getElementById(tileId);
-                el.setAttribute('class', 'swing-out');
-
-                el.addEventListener("animationend", function (event) {
-                    event.preventDefault();
-                    el.parentNode.replaceChild(imgTile, el);
-                    el.setAttribute('class', 'swing-in');
-                });
-
-
-
+                var blankTile = document.getElementById(tileId);
+                blankTile.textContent = letter;
             }
         },
         guessLetter: function (letter) { // this function checks to see if the letter picked was right
@@ -97,8 +84,10 @@ var WordGame = function () {
                 this.previousWords.push(this.currentWord.toString());
             }
             //randomly chooses a word from the word list
-            // var newWord = this.words[Math.floor(Math.random() * this.words.length) - 1];
-            var newWord = this.words[0];
+            do {
+                var newWord = this.words[Math.floor(Math.random() * this.words.length) - 1];
+            } while (newWord == '')
+             //var newWord = this.words[0];
             //splits word up into an array of letters
             this.currentWord = newWord.split('');
             //removes the word from the list so we dont use it agian
@@ -114,18 +103,28 @@ var WordGame = function () {
 
             var newdivGroup = document.createElement('div');
             newdivGroup.setAttribute('id', 'letterGroup');
-            newdivGroup.setAttribute('class', 'row');
+            newdivGroup.setAttribute('class', 'col');
 
             var ll = this.currentWord.length;
             for (var i = 0; i < ll; i++) {
 
-                var imgTile = document.createElement("img");
-                imgTile.setAttribute('id', 'letter_' + i);
-                imgTile.setAttribute('src', path + 'signs/letter_title.png');
-                var newSpanEle = document.createElement('span');
-                newSpanEle.setAttribute('class', 'letter-tile swing-in');
-                newSpanEle.appendChild(imgTile);
-                newdivGroup.appendChild(newSpanEle);
+                // var imgTile = document.createElement("img");
+                // imgTile.setAttribute('id', 'letter_' + i);
+                // imgTile.setAttribute('src', path + 'signs/letter_title.png');
+                // var newSpanEle = document.createElement('span');
+                // newSpanEle.setAttribute('class', 'letter-tile swing-in');
+                // newSpanEle.appendChild(imgTile);
+                // newdivGroup.appendChild(newSpanEle);
+                
+           
+                         
+                var tilePlaceHolder = document.createElement('span');
+                tilePlaceHolder.setAttribute('class', 'tile tile-letter');
+                tilePlaceHolder.setAttribute('id', 'letter_' + i);
+                tilePlaceHolder.innerText = "_";
+                newdivGroup.appendChild(tilePlaceHolder);
+
+
             }
 
             this.sysGetScreenEle('game').innerHTML = newdivGroup.outerHTML;
@@ -176,7 +175,7 @@ var WordGame = function () {
             var iconImgePath = '';
             switch (icon) {
                 case 'scroll':
-                    iconImgePath = 'assets/mages/icons/scroll.png';
+                    iconImgePath = 'assets/images/icons/scroll.png';
                     break;
                 case 'magnify':
                     iconImgePath = 'assets/images/icons/magnify.png';
@@ -211,6 +210,7 @@ var WordGame = function () {
         name: 'Player One',
         won: 0,
         level: 1,
+        subCounter:0,
         isWordComplete: function () {
             return this.howManyLettersLeft == 0 ? true : false;
         },
@@ -253,8 +253,10 @@ function startgame() {
     initialize();
     word_game.sysGetScreenEle('title').innerText = HOW_TO_PLAY_MESSAGE;
     document.getElementById('lettersUI').addEventListener("click", toggleLetters);
-  
-    listenForKey();
+    word_game.RefreshScreen();
+        listenForKey();
+        
+    
 }
 function toggleLetters(event){
     event.preventDefault();
@@ -275,60 +277,68 @@ function toggleLetters(event){
 
 
 function listenForKey() {
+   
     document.addEventListener('keyup', function (event) {
 
         var keypressed = event.key.toLowerCase();
         var iskeyValid = false;
+        //see if letter is in word
+        
         for (var i = 0; i < validKeys.length; ++i) {
 
             if (validKeys[i] === keypressed) {
                 iskeyValid = true;
+
+            }
+        }
+        if (iskeyValid) {
+            letterPositions = word_game.guessLetter(keypressed);
+             //add and display letter user is guessing
                 var letterchild = document.createElement("span");
                 var lettersused = document.getElementById('lettersUsed');
                 letterchild.innerText = keypressed.toLocaleUpperCase();
-                letterchild.className = "used";
-                letterchild.setAttribute('data-autohide','false');
+                // if letter is correct color it green
+                // if incorrect color it red
+                if (letterPositions) {
+                    letterchild.setAttribute('class', 'fill-yes used');
+                    word_game.score++
+                    word_game.showLetters(letterPositions);
+                } else {
+                    letterchild.setAttribute('class', 'fill-no used');
+                    word_game.incorrectLettersGuessed.push(keypressed);
+                    word_game.guessesLeft--;
+                }
                 lettersused.appendChild(letterchild);
-
-            }
-
-        }
-        if (iskeyValid) {
-
-            letterPositions = word_game.guessLetter(keypressed);
-            if (letterPositions) {
-                word_game.showLetters(letterPositions);
-                word_game.yesLetter(keypressed);
-            } else {
-                word_game.incorrectLettersGuessed.push(keypressed);
-                word_game.guessesLeft--;
-                word_game.noLetter(keypressed);
-            }
-
             word_game.RefreshScreen();
-            ///\ Checking for word completely guessed 
-            if (word_game.isWordComplete()) {
-                word_game.level++;
-                var filename = "../images/levels/level_" + word_game.level + ".jpg";
-                document.getElementById('game_window').style.backgroundImage = filename;
-                word_game.newWord();
-            }
-
-            if (word_game.lives == 0) {
+            
+            //Checking to see if used up all guesses
+            if (word_game.guessesLeft == 0) {
                 //TODO GAME OVER
                 // word_game.GameOver();
                 word_game.GameOver();
             }
-            if (word_game.howManyLettersLeft() == 0) {
-                //TODO GAME OVER
-                //word_game.GameOver();
-                alert("Game Over");
+            
+            if (word_game.isWordComplete()) {
+                // 2 words guess brings you to the next level
+                word_game.won++;
+                if (word_game.subCounter == 2) {
+                    word_game.subCounter = 0;
+                    word_game.level++;
+                    var filename = "assets/images/levels/level_" + word_game.level + ".jpg";
+                    document.getElementById('game_window').style.backgroundImage = filename;
+                } else {
+                    word_game.subCounter++
+                }
+                if (!word_game.isWordsLeft()) {
+                    //TODO YOU BEAT THE GAME
+                    stop();
+                }
+               
             }
-
-
 
         }
     });
+   
 }
 
 
