@@ -15,7 +15,7 @@ var path = 'assets/images/';
 var levels = [1, 2, 3, 4];
 var levelBackgrounds = ['level_', 'star_game.jpg', 'game_over.jpg', 'empty_sign.png'];
 var validKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-const STARTING_LIVES = 4;
+const STARTING_LIVES = 25;
 
 // String Messages this way it makes it easier to change the text
 const HOW_TO_PLAY_MESSAGE = 'Using the keyboard, select any letter from a - z';
@@ -163,8 +163,8 @@ var WordGame = function () {
         },
         PlayerAlertShow: function (message, icon, title = 'System Message') {
 
-            this.sysGetScreenEle('alertMessage').innerText = message;
-            this.sysGetScreenEle('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
+            document.getElementById('alertTitle').innerText = title;
             var iconImgePath = '';
             switch (icon) {
                 case 'scroll':
@@ -205,7 +205,7 @@ var WordGame = function () {
         level: 1,
         subCounter:0,
         isWordComplete: function () {
-            return this.howManyLettersLeft == 0 ? true : false;
+            return this.howManyLettersLeft() == 0 ? true : false;
         },
         clearScreen: function () {
             this.PlayerAlertHide();
@@ -251,6 +251,7 @@ document.addEventListener('keyup', startgame);
 function startgame() {
     document.getElementById('play').removeEventListener('click', startgame);
     document.removeEventListener('keyup', startgame);
+     document.body.style.backgroundImage = "url(assets/images/levels/level_1.jpg)"
     //clear scores, get everything ready to play
     initialize();
     word_game.sysGetScreenEle('title').innerText = HOW_TO_PLAY_MESSAGE;
@@ -323,14 +324,12 @@ function listenForKey() {
             if (word_game.isWordComplete()) {
                 // 2 words guess brings you to the next level
                 word_game.won++;
-                if (word_game.subCounter == 2) {
-                    word_game.subCounter = 0;
-                    word_game.level++;
-                    var filename = "url(../assets/images/levels/level_" + word_game.level + ".jpg)";
+               
+                    var filename = "url(assets/images/levels/level_" + word_game.level + ".jpg)";
                     document.body.style.backgroundImage = filename;
-                } else {
-                    word_game.subCounter++
-                }
+                word_game.RefreshScreen();
+                word_game.newWord();
+                
                 if (!word_game.isWordsLeft()) {
                     word_game.PlayerAlertShow('You Won The Game!', 'key', 'The End');
                 
