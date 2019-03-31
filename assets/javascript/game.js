@@ -15,7 +15,7 @@ var path = 'assets/images/';
 var levels = [1, 2, 3, 4];
 var levelBackgrounds = ['level_', 'star_game.jpg', 'game_over.jpg', 'empty_sign.png'];
 var validKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-const STARTING_LIVES = 25;
+const STARTING_LIVES = 6;
 
 // String Messages this way it makes it easier to change the text
 const HOW_TO_PLAY_MESSAGE = 'Using the keyboard, select any letter from a - z';
