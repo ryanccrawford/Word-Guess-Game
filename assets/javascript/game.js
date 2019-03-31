@@ -15,7 +15,7 @@ var path = 'assets/images/';
 var levels = [1, 2, 3, 4];
 var levelBackgrounds = ['level_', 'star_game.jpg', 'game_over.jpg', 'empty_sign.png'];
 var validKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-const STARTING_LIVES = 6;
+const STARTING_LIVES = 8;
 
 // String Messages this way it makes it easier to change the text
 const HOW_TO_PLAY_MESSAGE = 'Using the keyboard, select any letter from a - z';
@@ -82,11 +82,13 @@ var WordGame = function () {
             }
             return 0;
         },
+        clearTiles: function () { 
+            document.getElementById('game').innerHTML = '';
+            document.getElementById('lettersUsed').innerHTML = '';
+        },
         getNewWord: function () {
-            // checks for current word. If true stores it for latter access
-            if (!this.currentWord) {
-                this.previousWords.push(this.currentWord.toString());
-            }
+            
+            this.clearTiles();
             //randomly chooses a word from the word list
             //Words already Played become "" empty strings
             //added this loop so words that are alreay played won't be selected again
@@ -162,43 +164,48 @@ var WordGame = function () {
             this.sysGetScreenEle('level').innerText = level;
         },
         PlayerAlertShow: function (message, icon, title = 'System Message') {
+             $('#alertBox').on('hide.bs.modal', function (e) {
+                 
+             })
+             $('#alertBox').on('show.bs.modal', function (event) {
+                 var mes = message;
+                 var tim = title;
+                 var iconImgePath = '';
+                 switch (icon) {
+                     case 'scroll':
+                         iconImgePath = 'assets/images/icons/scroll.png';
+                         break;
+                     case 'magnify':
+                         iconImgePath = 'assets/images/icons/magnify.png';
+                         break;
+                     case 'key':
+                         iconImgePath = 'assets/images/icons/key.png';
+                         break;
+                     default:
+                         iconImgePath = 'assets/images/icons/scroll.png';
+                         break;
+                 }
+                 var icon = iconImgePath;
+                 var game_obj = $(event.relatedTarget);
+                 var modal = $(this);
+                 modal.find('.modal-title').text(tim);
+                 modal.find('.modal-body input').val('<img src"'+icon+'">' + message)
+             })
 
-            document.getElementById('alertMessage').innerText = message;
-            document.getElementById('alertTitle').innerText = title;
-            var iconImgePath = '';
-            switch (icon) {
-                case 'scroll':
-                    iconImgePath = 'assets/images/icons/scroll.png';
-                    break;
-                case 'magnify':
-                    iconImgePath = 'assets/images/icons/magnify.png';
-                    break;
-                case 'key':
-                    iconImgePath = 'assets/images/icons/key.png';
-                    break;
-                default:
-                    iconImgePath = 'assets/images/icons/scroll.png';
-                    break;
-            }
-            this.sysAlertIconImage(iconImgePath);
             $('#alertBox').modal('show');
         },
         PlayerAlertHide: function () {
             $('#alertBox').modal('hide');
-            this.sysGetScreenEle('alertMessage').innerText = '';
-            this.sysGetScreenEle('alertTitle').innerText = '';
         },
         RefreshScreen: function () {
             this.PrintScore(this.won);
             this.PrintGuessesLeft(this.guessesLeft);
             this.Printlevel(this.level);
-            this.PlayerAlertHide();
-
 
         },
         GameOver: function () {
             this.PlayerAlertShow("Game Over!", 'scroll', "No More Guesses Left");
-           return newGame();
+            
         },
         name: 'Player One',
         won: 0,
@@ -208,7 +215,6 @@ var WordGame = function () {
             return this.howManyLettersLeft() == 0 ? true : false;
         },
         clearScreen: function () {
-            this.PlayerAlertHide();
             this.sysGetScreenEle('title').style.color = 'white';
             this.sysGetScreenEle('game').innerHTML = "";
 
@@ -234,6 +240,27 @@ var WordGame = function () {
             this.words = wordCollection;
             this.won = 0;
             this.subCounter = 0;
+        },
+        nextLevel: function () {
+            this.getNewWord();
+            this.level++;
+            var filename = "url('assets/images/levels/level_" + this.level + ".jpg')";
+            document.getElementById('back').style.backgroundImage = filename;
+            this.RefreshScreen();
+            $('#nextLevelBox').on('hide.bs.modal', function (e) {
+               
+            })
+            $('#nextLevelBox').on('show.bs.modal', function (event) {
+                var message = "Great Job! You earnd " + STARTING_LIVES + " more tries. Are you ready for the next Level? Click 'PLAY' When Ready.";
+                var title = "Next Level";
+                var game_obj = $(event.relatedTarget);
+                var modal = $(this);
+                modal.find('.modal-title').text(title);
+                modal.find('.modal-body input').val(message)
+            })
+             
+            $('#nextLevelBox').modal('show');
+                
         }
     };
 };
@@ -298,7 +325,7 @@ function listenForKey() {
         if (iskeyValid) {
             letterPositions = word_game.guessLetter(keypressed);
              //add and display letter user is guessing
-                var letterchild = document.createElement("span");
+                var letterchild = document.createElement("div");
                 var lettersused = document.getElementById('lettersUsed');
                 letterchild.innerText = keypressed.toLocaleUpperCase();
                 // if letter is correct color it green
@@ -324,19 +351,18 @@ function listenForKey() {
             if (word_game.isWordComplete()) {
                 // 2 words guess brings you to the next level
                 word_game.won++;
-               
-                    var filename = "url(assets/images/levels/level_" + word_game.level + ".jpg)";
-                    document.body.style.backgroundImage = filename;
-                word_game.RefreshScreen();
-                word_game.newWord();
-                
                 if (!word_game.isWordsLeft()) {
                     word_game.PlayerAlertShow('You Won The Game!', 'key', 'The End');
-                
+                    
+                } else {
+                    
+                    word_game.nextLevel();
+
                 }
+
+
                
             }
-
         }
     });
    
@@ -349,3 +375,4 @@ function initialize() {
     word_game.clearScreen();
     word_game.getNewWord();
 }
+
