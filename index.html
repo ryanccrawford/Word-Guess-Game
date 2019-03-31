@@ -1,107 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/reset.css">
-   
-    
-   
+
+
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <title>Word Guess Game</title>
 </head>
+
 <body>
-    
-    <div class="container-fluid">
-    <div id="startingup" >
-                <div class="jumbotron">
-                        <div class="container">
-                          <h1 class="text-light">Medieval Word Guess</h1>
-                          <div id="loader" class="spinner-border text-light" role="status">
-                                <span class="sr-only">Loading...</span>
-                          </div>
-                          <p id="startButton"><button type="button" name="start" id="start" class="btn btn-primary btn-lg btn-block">Start Game</button></p>
-                        </div>
-                      </div>
-    </div>
-    </div>
-    <div id="game_window">
-      <div class="container">
-            <div id="alertbox" class="alert" role="alert">
-                    <div id="alertIcon" class="alert-icon">
-                        <img id="alertIconImage">
-                    </div>
-                    <h4 id="alertTitle" class="alert-heading"></h4>
-                    <p id="alertMessage"></p>
-                </div>
-      </div>
-    <div class="container-fluid">
-          
-        <div class="row">
-                <div class="col-4">
-                        <div id="sign" class="sign">
-                                <div class="infoStatus1">
-                                    <h3 class="Score">Wins <span id="wins">-</span></h3>
-                                    <img src="assets/images/signs/hang_sign.png">
-                                </div>
-                                <div class="infoStatus2">
-                                    <h3 class="Score">Tries <span id="guessesleft">--</span></h3>
-                                    <img src="assets/images/signs/hang_sign.png" >
-                                </div>
-                                <div class="infoStatus3">
-                                    <h3 class="Score">Level <span id="level">--</span></h3>
-                                    <img src="assets/images/signs/hang_sign.png">
-                                </div>
-                        </div>
-                </div>
-                <div id="mouse-area" class="col-4">
-                <div id="gameInfoArea" style="display: block;">
-                   <div class="container">
-                       
-                   
-                        <h5 id="title"></h5>
-                    </div>
-                </div>
-                </div>
-                <div class="col-4 letters-col">
-                    <span id="lettersUI" class="ui-text">Letters Used</span>
-                        <div id='lettersUsed'>
-                    
-                        </div>
-                    </div>
-                </div>
-        </div>
-        <div class="container-fluid">
-            
-       
+    <div id="start" class="container-fluid">
         <div class="row">
             <div class="col-12">
-                        <div id="screenarea">
-                                <div id="woodBeam1" class="wooden-beam">
-                                    <img src="assets/images/levels/wood_beam.png">
-                                </div>
-                                <div id="game"></div>
-                                
-                        </div>         
-                 
+                <div class="card text-center">
+                    <div class="card-header">
+                        Welcome
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Welcome to Medieval Word Guess</h5>
+                        <p class="card-text">To play use your keyboard to guess a letter and complete the word.</p>
+                        <p class="card-text">Click the 'PLAY' button or 'ANY KEY' to play.</p>
+                        <a id="play" href="#" class="btn btn-primary">PLAY</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Game By Ryan Crawford
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="alertBox" tabindex="-1" role="dialog" aria-labelledby="SystemInfo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="alertIcon" class="icon">
+                        <img id="alertIconImage" class="float-left">
+                    </div>
+                    <p id="alertMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav id="navtop" class="navbar navbar-dark bg-dark">
+        <span class="navbar-text text-light">
+            Medieval Word Guess
+        </span>
+    </nav>
+    <div id="game_window" class="container-fluid">
+        <div class="row">
+
+            <div class="col-2">
+                <div class="info1">
+                    <img src="assets/images/signs/hang_sign.png" width="50%">
+                    <h3 class="Score">Wins <span id="wins">-</span></h3>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="info2">
+                    <img src="assets/images/signs/hang_sign.png" width="50%">
+                    <h3 class="Score">Tries <span id="guessesleft">--</span></h3>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="info3">
+                    <img src="assets/images/signs/hang_sign.png" width="50%">
+                    <h3 class="Score">Level <span id="level">--</span></h3>
+                </div>
+            </div>
+            <div class="col-6">
+
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-4 offset-4">
+                <span id="lettersUI" class="ui-text">Letters Used</span>
+                <div id='lettersUsed'>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="gameInfoArea">
+                <h5 id="title"></h5>
+            </div>
+        </div>
+        <div style="position: relative; margin-top: 25%">
+            <div class="row">
+
+                <div class="col-12">
+                    <div id="screenarea">
+
+                        <div id="game"></div>
+
+
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
-        </div>
-    
+    <nav class="navbar fixed-bottom navbar-dark bg-dark">
+        <span class="navbar-text">
+            By Ryan Crawford
+        </span>
+    </nav>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
     <script src="assets/javascript/game.js"></script>
 </body>
+
 </html>
